@@ -1,7 +1,9 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
-import { Exercise } from '../../lib/types';
+import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
+import { Exercise } from '@/lib/types';
 import { ArrowLeft, CheckSquare, Square, Download, Check, X, Clock } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -86,7 +88,7 @@ export default function AdminDashboard() {
     <div className="max-w-6xl mx-auto p-6">
       <header className="flex justify-between items-center mb-8">
         <div className="flex items-center gap-4">
-          <Link to="/" className="text-grijs hover:text-zwijsen-blauw">
+          <Link href="/" className="text-grijs hover:text-zwijsen-blauw">
             <ArrowLeft size={24} />
           </Link>
           <h1 className="text-2xl font-bold text-zwijsen-donkerblauw">Content Editor Dashboard</h1>
@@ -159,7 +161,7 @@ export default function AdminDashboard() {
                 <td className="p-4 text-sm max-w-xs truncate">{ex.original_problem}</td>
                 <td className="p-4 text-right">
                   <Link 
-                    to={`/admin/${ex.id}`}
+                    href={`/admin/${ex.id}`}
                     className="inline-block px-4 py-1.5 bg-zwijsen-lichtblauw text-zwijsen-donkerblauw hover:bg-zwijsen-blauw hover:text-white rounded-md text-sm font-medium transition-colors"
                   >
                     Bewerk

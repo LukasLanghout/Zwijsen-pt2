@@ -1,12 +1,16 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
-import { Exercise, ExerciseVariation } from '../lib/types';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
+import { Exercise, ExerciseVariation } from '@/lib/types';
 import { ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 
 export default function ExercisePage() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params?.id as string;
   const [exercise, setExercise] = useState<Exercise | null>(null);
   const [currentVarIndex, setCurrentVarIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -14,6 +18,7 @@ export default function ExercisePage() {
   const [isCorrect, setIsCorrect] = useState(false);
 
   useEffect(() => {
+    if (!id) return;
     const fetchExercise = async () => {
       const { data, error } = await supabase
         .from('exercises')
@@ -34,14 +39,11 @@ export default function ExercisePage() {
   const totalVariations = exercise.variations.length;
 
   const handleSubmit = () => {
-    // Simple validation logic depending on type
     let correct = false;
     
     if (exercise.exercise_type === 'meerkeuze') {
       correct = parseInt(answers['mc']) === currentVariation.correct_option_index;
     } else if (exercise.exercise_type === 'rij') {
-      // Check if all filled inputs match the expected sequence logic
-      // Simplified for demo
       correct = true; 
     } else if (exercise.exercise_type === 'splits') {
       const h = answers['h'] || '0';
@@ -190,10 +192,9 @@ export default function ExercisePage() {
 
   return (
     <div className="min-h-screen bg-zwijsen-lichtblauw">
-      {/* Header */}
       <header className="bg-white shadow-sm px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-4">
-          <Link to="/" className="text-grijs hover:text-zwijsen-blauw transition-colors">
+          <Link href="/" className="text-grijs hover:text-zwijsen-blauw transition-colors">
             <ArrowLeft size={24} />
           </Link>
           <div>
@@ -216,7 +217,6 @@ export default function ExercisePage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-3xl mx-auto mt-12 p-6">
         <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/50">
           <div className="flex items-start gap-6">

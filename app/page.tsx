@@ -1,7 +1,9 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
-import { Exercise } from '../lib/types';
+import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
+import { Exercise } from '@/lib/types';
 import { Upload, FileText, Settings, BarChart2 } from 'lucide-react';
 
 export default function Home() {
@@ -58,10 +60,10 @@ export default function Home() {
           Zwijsen Rekenen
         </h1>
         <nav className="flex gap-4">
-          <Link to="/admin" className="flex items-center gap-2 text-grijs hover:text-zwijsen-blauw font-medium">
+          <Link href="/admin" className="flex items-center gap-2 text-grijs hover:text-zwijsen-blauw font-medium">
             <Settings size={18} /> Admin Dashboard
           </Link>
-          <Link to="/admin/analytics" className="flex items-center gap-2 text-grijs hover:text-zwijsen-blauw font-medium">
+          <Link href="/admin/analytics" className="flex items-center gap-2 text-grijs hover:text-zwijsen-blauw font-medium">
             <BarChart2 size={18} /> Analytics
           </Link>
         </nav>
@@ -123,7 +125,7 @@ export default function Home() {
                 </div>
                 <div className="flex gap-2">
                   <Link
-                    to={`/oefening/${ex.id}`}
+                    href={`/oefening/${ex.id}`}
                     className="px-4 py-2 bg-zwijsen-lichtblauw text-zwijsen-donkerblauw rounded-lg text-sm font-medium hover:bg-zwijsen-blauw hover:text-white transition-colors"
                   >
                     Maak Oefening

@@ -1,11 +1,15 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
-import { Exercise, ExerciseVariation, GenerateVariationsRequest } from '../lib/types';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
+import { Exercise, ExerciseVariation, GenerateVariationsRequest } from '@/lib/types';
 import { ArrowLeft, Settings2, RefreshCw, Save, Check } from 'lucide-react';
 
 export default function Variations() {
-  const { id } = useParams();
+  const paramsHook = useParams();
+  const id = paramsHook?.id as string;
   const [exercise, setExercise] = useState<Exercise | null>(null);
   const [loading, setLoading] = useState(false);
   const [generatedVars, setGeneratedVars] = useState<Partial<ExerciseVariation>[]>([]);
@@ -20,6 +24,7 @@ export default function Variations() {
   });
 
   useEffect(() => {
+    if (!id) return;
     const fetchExercise = async () => {
       const { data } = await supabase
         .from('exercises')
@@ -91,7 +96,7 @@ export default function Variations() {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <header className="flex items-center gap-4 mb-8">
-        <Link to={`/admin/${id}`} className="text-grijs hover:text-zwijsen-blauw">
+        <Link href={`/admin/${id}`} className="text-grijs hover:text-zwijsen-blauw">
           <ArrowLeft size={24} />
         </Link>
         <h1 className="text-2xl font-bold text-zwijsen-donkerblauw flex items-center gap-2">
@@ -101,7 +106,6 @@ export default function Variations() {
       </header>
 
       <div className="grid md:grid-cols-3 gap-8">
-        {/* Parameters Panel */}
         <div className="md:col-span-1 space-y-6">
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
             <h2 className="font-semibold text-lg mb-2 text-zwijsen-donkerblauw">Basis Oefening</h2>
@@ -181,7 +185,6 @@ export default function Variations() {
           </div>
         </div>
 
-        {/* Results Panel */}
         <div className="md:col-span-2">
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 min-h-[500px]">
             <h2 className="font-semibold text-lg mb-6 text-zwijsen-donkerblauw">Resultaat</h2>
